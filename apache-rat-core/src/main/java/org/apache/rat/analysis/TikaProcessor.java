@@ -192,7 +192,7 @@ public final class TikaProcessor {
                 List<EncodingResult> results = ENCODING_DETECTOR.detect(tis, metadata, parseContext);
 
                 if (results.isEmpty()) {
-                    DefaultLog.getInstance().debug(String.format("No encoding found for file '%s'", documentName));
+                    DefaultLog.getInstance().warn(String.format("No encoding found for file '%s'", documentName));
                     return null;
                 }
 
