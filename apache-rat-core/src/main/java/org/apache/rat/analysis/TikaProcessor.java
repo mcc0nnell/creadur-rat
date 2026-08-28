@@ -176,7 +176,7 @@ public final class TikaProcessor {
      * @throws IOException on IO error.
      * @throws UnsupportedCharsetException on unsupported charset.
      */
-    private static Charset detectCharset(final InputStream stream, final DocumentName documentName) throws IOException, UnsupportedCharsetException {
+    static Charset detectCharset(final InputStream stream, final DocumentName documentName) throws IOException, UnsupportedCharsetException {
         stream.mark(BYTES_FOR_CHARSET_DETECTION);
         try {
             byte[] sample = stream.readNBytes(BYTES_FOR_CHARSET_DETECTION);
