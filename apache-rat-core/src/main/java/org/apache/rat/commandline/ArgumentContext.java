@@ -49,7 +49,7 @@ public final class ArgumentContext {
     /**
      * Creates a context with the specified configuration.
      * @param workingDirectory the directory from which relative file names will be resolved.
-     * @param configuration The configuration that is being built.
+     * @param configuration the configuration that is being built.
      * @param opts the Options for the command line.
      * @param args the arguments for the options.
      * @throws ParseException if the options can not parse the arguments.
@@ -63,7 +63,7 @@ public final class ArgumentContext {
 
     /**
      * Creates a context with an empty configuration.
-     * @param workingDirectory The directory from which to resolve relative file names.
+     * @param workingDirectory the directory from which to resolve relative file names.
      * @param opts the Options for the command line.
      * @param args the arguments for the options.
      * @throws ParseException if the options can not parse the arguments.
@@ -90,6 +90,7 @@ public final class ArgumentContext {
         }
         return options;
     }
+
     /**
      * Process the arguments specified in this context.
      */
@@ -99,7 +100,7 @@ public final class ArgumentContext {
 
     /**
      * Gets the configuration.
-     * @return The configuration that is being built.
+     * @return the configuration that is being built.
      */
     public ReportConfiguration getConfiguration() {
         return configuration;
@@ -107,7 +108,7 @@ public final class ArgumentContext {
 
     /**
      * Gets the command line.
-     * @return The command line that is driving the configuration.
+     * @return the command line that is driving the configuration.
      */
     public CommandLine getCommandLine() {
         return commandLine;
@@ -115,7 +116,7 @@ public final class ArgumentContext {
 
     /**
      * Gets the directory name from which relative file names will be resolved.
-     * @return The directory name from which relative file names will be resolved.
+     * @return the directory name from which relative file names will be resolved.
      */
     public DocumentName getWorkingDirectory() {
         return workingDirectory;
@@ -123,8 +124,8 @@ public final class ArgumentContext {
 
     /**
      * Logs a ParseException as a warning.
-     * @param exception the parse exception to log
-     * @param opt the option being processed
+     * @param exception the parse exception to log.
+     * @param opt the option being processed.
      * @param defaultValue The default value the option is being set to.
      */
     public void logParseException(final ParseException exception, final Option opt, final Object defaultValue) {
