@@ -169,7 +169,7 @@ public class UIOptionCollection<T extends UIOption<T>> {
 
     /**
      * Gets a map client option name to the specified UIOption implementation.
-     * @return a map client option name to thge specified UIOption implementation.
+     * @return a map client option name to the specified UIOption implementation.
      */
     public final Map<String, T> getOptionMap() {
         Map<String, T> result = new TreeMap<>();
@@ -221,7 +221,7 @@ public class UIOptionCollection<T extends UIOption<T>> {
      * @param <B> the concrete type the Builder.
      */
     protected static class Builder<T extends UIOption<T>, B extends Builder<T, B>> {
-        /** set of additional UI specific options */
+        /** Set of additional UI specific options. */
         private final List<Option> uiOptions;
         /**
          * Map of option to overridden default value. Generally applies to supported RAT options but may be
