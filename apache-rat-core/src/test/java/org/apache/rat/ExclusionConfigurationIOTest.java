@@ -18,7 +18,11 @@
  */
 package org.apache.rat;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -29,8 +33,6 @@ import org.apache.rat.document.DocumentName;
 import org.apache.rat.document.DocumentNameMatcher;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class ExclusionConfigurationIOTest {
 
@@ -65,6 +67,17 @@ class ExclusionConfigurationIOTest {
         assertThat(replayedMatcher.matches(base.resolve("src/generated/keep.txt"))).isTrue();
         assertThat(replayedMatcher.matches(base.resolve("target/build.log"))).isFalse();
         assertThat(replayedMatcher.matches(base.resolve("src/keep.txt"))).isTrue();
+    }
+
+    @Test
+    void rejectsRuntimePathMatchers() {
+        String serialized = "<ExclusionProcessor><excludedPath name=\"runtime predicate\"/></ExclusionProcessor>";
+
+        assertThatThrownBy(() -> ExclusionConfigurationIO.read(
+                        new ReportConfiguration(),
+                        new ByteArrayInputStream(serialized.getBytes(StandardCharsets.UTF_8))))
+                .isInstanceOf(IOException.class)
+                .hasMessageContaining("cannot be replayed");
     }
 
     private static void assertSameDecision(

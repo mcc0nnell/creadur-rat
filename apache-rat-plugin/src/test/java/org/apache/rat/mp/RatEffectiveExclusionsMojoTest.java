@@ -18,6 +18,8 @@
  */
 package org.apache.rat.mp;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -30,12 +32,11 @@ import org.apache.rat.document.DocumentName;
 import org.apache.rat.test.utils.Resources;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 class RatEffectiveExclusionsMojoTest extends BetterAbstractMojoTestCase {
 
     @Test
     void exportsInheritedMavenExclusions() throws Exception {
+        setUp();
         Arg.reset();
         File pom = Resources.getResourceFile("unit/RAT-554/child/pom.xml");
         RatEffectiveExclusionsMojo mojo =

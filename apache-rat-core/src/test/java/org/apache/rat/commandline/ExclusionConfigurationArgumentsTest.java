@@ -18,6 +18,9 @@
  */
 package org.apache.rat.commandline;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
@@ -32,9 +35,6 @@ import org.apache.rat.config.exclusion.StandardCollection;
 import org.apache.rat.document.DocumentName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ExclusionConfigurationArgumentsTest {
 
@@ -54,7 +54,7 @@ class ExclusionConfigurationArgumentsTest {
         }
 
         String[] expanded = ExclusionConfigurationArguments.expand(new String[] {
-                "--input-exclusion-config", configurationFile.toString(), tempDir.toString()
+            "--input-exclusion-config", configurationFile.toString(), tempDir.toString()
         });
         ReportConfiguration replayed = OptionCollection.parseCommands(tempDir.toFile(), expanded, options -> {
         });

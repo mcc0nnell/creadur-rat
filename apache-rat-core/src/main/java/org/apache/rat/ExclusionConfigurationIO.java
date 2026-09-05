@@ -24,6 +24,7 @@ import java.io.InputStream;
 import org.apache.rat.report.xml.writer.XmlWriter;
 import org.apache.rat.utils.StandardXmlFactory;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -34,10 +35,9 @@ import org.xml.sax.SAXException;
  * standard collections, include overrides, and SCM file processors without
  * requiring another frontend to reconstruct Maven configuration.</p>
  *
- * <p>Arbitrary {@code DocumentNameMatcher} predicates are diagnostic-only in
- * the existing serialization and cannot be executed after deserialization.
- * Frontends exporting configuration for replay should therefore export before
- * adding frontend-specific runtime predicates.</p>
+ * <p>Arbitrary runtime {@code DocumentNameMatcher} predicates cannot be
+ * executed after deserialization. Import therefore fails closed if such a
+ * matcher is present instead of silently changing exclusion semantics.</p>
  */
 public final class ExclusionConfigurationIO {
 
@@ -61,11 +61,13 @@ public final class ExclusionConfigurationIO {
     }
 
     /**
-     * Merges exclusions from RAT-native XML into an existing configuration.
+     * Merges portable exclusions from RAT-native XML into an existing
+     * configuration.
      *
      * @param configuration the configuration receiving the exclusions
      * @param input the serialized exclusion configuration
-     * @throws IOException if the configuration cannot be read
+     * @throws IOException if the configuration cannot be read or contains a
+     *         runtime path matcher that cannot be replayed
      */
     public static void read(final ReportConfiguration configuration, final InputStream input) throws IOException {
         final org.w3c.dom.Document document;
@@ -80,6 +82,18 @@ public final class ExclusionConfigurationIO {
             throw new IOException("Invalid exclusion configuration: expected " + ROOT);
         }
 
+        rejectRuntimePathMatchers(root);
         configuration.getExclusionProcessor().serDes().deserialize(root);
+    }
+
+    private static void rejectRuntimePathMatchers(final Node root) throws IOException {
+        NodeList children = root.getChildNodes();
+        for (int i = 0; i < children.getLength(); i++) {
+            String name = children.item(i).getNodeName();
+            if ("excludedPath".equals(name) || "includedPath".equals(name)) {
+                throw new IOException(
+                        "Exclusion configuration contains a runtime path matcher that cannot be replayed");
+            }
+        }
     }
 }
