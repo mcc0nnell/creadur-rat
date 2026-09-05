@@ -21,6 +21,7 @@ package org.apache.rat;
 import java.io.File;
 
 import org.apache.commons.cli.Options;
+import org.apache.rat.commandline.ExclusionConfigurationArguments;
 import org.apache.rat.document.RatDocumentAnalysisException;
 import org.apache.rat.help.Help;
 import org.apache.rat.utils.DefaultLog;
@@ -48,7 +49,9 @@ public final class Report {
             System.exit(0);
         }
 
-        ReportConfiguration configuration = OptionCollection.parseCommands(new File("."), args, Report::printUsage);
+        String[] expandedArgs = ExclusionConfigurationArguments.expand(args);
+        ReportConfiguration configuration =
+                OptionCollection.parseCommands(new File("."), expandedArgs, Report::printUsage);
         if (configuration != null) {
             configuration.validate(DefaultLog.getInstance()::error);
             Reporter.Output output = new Reporter(configuration).execute();
@@ -69,6 +72,7 @@ public final class Report {
      * @param opts the defined options.
      */
     private static void printUsage(final Options opts) {
+        opts.addOption(ExclusionConfigurationArguments.option());
         new Help(System.out).printUsage(opts);
     }
 
