@@ -8,12 +8,11 @@
 #
 #       http://www.apache.org/licenses/LICENSE-2.0
 #
-# Unless required by applicable law or agreed to in writing,
-# software distributed under the License is distributed on an
-# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-# KIND, either express or implied.  See the License for the
-# specific language governing permissions and limitations
-# under the License.
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 name: GitHub CI
 
@@ -21,6 +20,7 @@ on:
   push:
     branches:
       - master
+      - ci/rat-554-local
 #    branches-ignore:
 #      - dependabot/**
   pull_request:
@@ -34,7 +34,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-# RAT-497: JDK17/18/19-javadoc error fails the site build, albeit javadoc:javadoc works fine, https://bugs.java.com/bugdatabase/view_bug?bug_id=JDK-8369613
+# RAT-497: JDK17/18/19-javadoc error fails the site build, albeit javadoc:javadoc works fine, https://bugs.java.com/bugdatabase/view_bug.do?bug_id=JDK-8369613
 # Due to RAT-497 we skip javadoc and site generation with JDK17!
         java: [17, 20, 21, 25]
       fail-fast: false
