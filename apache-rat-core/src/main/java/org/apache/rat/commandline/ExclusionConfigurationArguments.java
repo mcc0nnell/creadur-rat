@@ -66,6 +66,11 @@ public final class ExclusionConfigurationArguments {
      * Replaces each {@code --input-exclusion-config} option with the RAT CLI
      * arguments represented by that file.
      *
+     * <p>RAT's include and exclude options accept multiple values. If a
+     * positional source immediately follows the imported configuration, a
+     * standard {@code --} delimiter is inserted so Commons CLI does not consume
+     * that source as another exclusion value.</p>
+     *
      * @param args original CLI arguments
      * @return expanded CLI arguments
      * @throws IOException if an exclusion configuration cannot be read
@@ -82,14 +87,22 @@ public final class ExclusionConfigurationArguments {
                     throw new IOException(option + " requires a file argument");
                 }
                 append(result, Path.of(args[i]));
+                terminateBeforePositional(result, args, i + 1);
             } else if (arg.startsWith(optionPrefix)) {
                 append(result, Path.of(arg.substring(optionPrefix.length())));
+                terminateBeforePositional(result, args, i + 1);
             } else {
                 result.add(arg);
             }
         }
 
         return result.toArray(String[]::new);
+    }
+
+    private static void terminateBeforePositional(final List<String> result, final String[] args, final int nextIndex) {
+        if (nextIndex < args.length && !args[nextIndex].startsWith("-")) {
+            result.add("--");
+        }
     }
 
     private static void append(final List<String> args, final Path file) throws IOException {
