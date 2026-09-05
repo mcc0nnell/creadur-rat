@@ -41,6 +41,7 @@ public final class ExclusionConfigurationArguments {
     /** CLI option used to import a serialized exclusion configuration. */
     public static final String OPTION = "input-exclusion-config";
 
+    /** Root element used by the exclusion configuration serialization. */
     private static final String ROOT = "ExclusionProcessor";
 
     private ExclusionConfigurationArguments() {
